@@ -1,6 +1,8 @@
 package model;
 
 
+import model.enums.Vulnerability;
+
 /**
  * Class representing a Zombie character in the horror RPG game.
  * Zombies are vulnerable to fire and sunlight.
@@ -13,8 +15,8 @@ public class Zombie extends HorrorCharacter {
      * @param health health of the zombie
      * @param mana mana of the zombie
      */
-    public Zombie(String name, int health, int mana) {
-        super(name, health, mana);
+    public Zombie(String name, int health) {
+        super(name, health);
 
         // Zombies are vulnerable to fire and sunlight
         setVulnerabilities(new Vulnerability[] {
@@ -28,8 +30,8 @@ public class Zombie extends HorrorCharacter {
      * Zombies attack by eating the brains of their victims.
      */
     @Override
-    public void attack() {
-        System.out.println(getName() + "\n");
+    public void attack(Player player) {
+        System.out.println(getName() + " tries to escape but fell on his face!\n");
     }
 
     /**

@@ -1,6 +1,7 @@
 package model;
 
 import interfaces.Transformable;
+import model.enums.Vulnerability;
 
 /**
  * Werewolf class, a type of HorrorCharacter that can transform into a human.
@@ -15,10 +16,9 @@ public class Werewolf extends HorrorCharacter implements Transformable {
      * Constructor
      * @param name name of the werewolf
      * @param health health of the werewolf
-     * @param mana mana of the werewolf
      */
-    public Werewolf(String name, int health, int mana) {
-        super(name, health, mana);
+    public Werewolf(String name, int health) {
+        super(name, health);
 
         // Werewolves are vulnerable to sunlight and silver
         setVulnerabilities(new Vulnerability[] {
@@ -31,7 +31,7 @@ public class Werewolf extends HorrorCharacter implements Transformable {
      * Attack method, behavior changes based on transformation state.
      */
     @Override
-    public void attack() {
+    public void attack(Player player) {
         if (transformed) {
             System.out.println(getName() + " throws a weak human punch!\n");
         } else {
@@ -44,7 +44,7 @@ public class Werewolf extends HorrorCharacter implements Transformable {
      */
     @Override
     public void flee() {
-        System.out.println(getName() + " evades the conflict!\n");
+        System.out.println(getName() + " tries to escape but fell on his face!\n");
     }
 
     /**

@@ -1,59 +1,53 @@
 package model;
 
+import interfaces.AttackBehavior;
 import interfaces.Transformable;
-import java.util.Scanner;
+import model.attacks.vampire.BiteAttack;
+import model.attacks.vampire.DrainBloodAttack;
+import model.attacks.vampire.HypnotizeAttack;
+import model.enums.Vulnerability;
 
-/**
- * Vampire class, a type of HorrorCharacter that can transform into a bat.
- * Vampires are vulnerable to sunlight and holy water.
- */
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Vampire extends HorrorCharacter implements Transformable {
 
     // State to track transformation
     private boolean transformed = false;
+    private final ArrayList<AttackBehavior> attacks = new ArrayList<>();
+    private final Random random = new Random();
 
-    /**
-     * Constructor
-     * @param name
-     * @param health
-     * @param mana
-     */
-    public Vampire(String name, int health, int mana) {
-        super(name, health, mana);
+    public Vampire(String name, int health) {
+        super(name, health);
+
+        attacks.add(new BiteAttack());
+        attacks.add(new DrainBloodAttack());
+        attacks.add(new HypnotizeAttack());
 
         // Vampires are vulnerable to sunlight and holy water
-        setVulnerabilities(new Vulnerability[] {
+        setVulnerabilities(new Vulnerability[]{
                 Vulnerability.SUNLIGHT,
                 Vulnerability.HOLY_WATER
         });
     }
 
-    /**
-     * Attack method, behavior changes based on transformation state.
-     */
     @Override
-    public void attack() {
-        if (transformed) {
-            System.out.println(getName() + " swoop down and use bite strike!\n");
-        } else {
-            System.out.println(getName() + " uses dark vampire magic on enemy!\n");
+    public void attack(Player target) {
+        // Pick a random attack
+        AttackBehavior chosenAttack = attacks.get(random.nextInt(attacks.size()));
+        int damage = chosenAttack.attack(target, this);
+        if (damage > 0) {
+            System.out.println(getName() + " deals " + damage + " damage to " + target.getName() + "!\n");
         }
     }
 
-    /**
-     * Flee method
-     */
+
     @Override
     public void flee() {
-        System.out.println(getName() + " quickly vanishes into the night!\n");
+        System.out.println(getName() + " tries to escape but fell on his face!\n");
     }
 
-    /**
-     * Transform method, toggles between vampire and bat forms.
-     * Transforming into a bat reduces health by 10, transforming back restores 10 health
-     * if health is above 0.
-     * If health is 0 or below, transformation is not possible.
-     */
+
     @Override
     public void transform() {
         if (getHealth() <= 0) {
